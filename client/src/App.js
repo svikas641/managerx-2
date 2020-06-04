@@ -3,8 +3,6 @@ import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import Navbar from "./components/layout/Navbar";
 import Landing from "./components/layout/Landing";
 import Routes from "./components/routing/Routes";
-import PrivateRoute from "./components/routing/PrivateRoute";
-import Map from "./components/map/Map";
 // Redux
 import { Provider } from "react-redux";
 import store from "./Store";
@@ -28,7 +26,6 @@ const App = () => {
         <Fragment>
           <Navbar />
           <Switch>
-            <PrivateRoute exact path="/track-leads" component={Map} />
             <Route exact path="/" component={Landing} />
             <Route component={Routes} />
           </Switch>
