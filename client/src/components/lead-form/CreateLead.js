@@ -3,10 +3,6 @@ import { Link, withRouter } from "react-router-dom";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { createLead } from "../../actions/lead";
-import PlacesAutocomplete, {
-  geocodeByAddress,
-  getLatLng,
-} from "react-places-autocomplete";
 
 const CreateLead = ({ createLead, history }) => {
   const initialState = {
@@ -14,13 +10,9 @@ const CreateLead = ({ createLead, history }) => {
     clientName: "",
     clientEmail: "",
     clientPhoneNumber: "",
+    clientAddress: "",
     pincode: "",
   };
-  const [address, setAddress] = useState("");
-  const [coordinates, setCoordinates] = useState({
-    lat: null,
-    lng: null,
-  });
   const [formData, setFormData] = useState(initialState);
 
   const {
@@ -28,26 +20,17 @@ const CreateLead = ({ createLead, history }) => {
     clientName,
     clientEmail,
     clientPhoneNumber,
+    clientAddress,
     pincode,
   } = formData;
 
   const onChange = (e) =>
     setFormData({ ...formData, [e.target.name]: e.target.value });
 
-  const handleSelect = async (value) => {
-    const results = await geocodeByAddress(value);
-    const latLng = await getLatLng(results[0]);
-    const clientAddress = value;
-    setAddress(clientAddress);
-    setCoordinates(latLng);
-    setFormData({ ...formData, latLng, clientAddress });
-  };
-
   const onSubmit = (e) => {
     e.preventDefault();
     createLead(formData, history);
     setFormData(initialState);
-    setAddress("");
   };
 
   return (
@@ -95,40 +78,14 @@ const CreateLead = ({ createLead, history }) => {
           />
         </div>
         <div className="form-group">
-          <PlacesAutocomplete
+          <input
+            type="text"
+            placeholder="Client Address"
             name="clientAddress"
-            value={address}
-            onChange={setAddress}
-            onSelect={handleSelect}
+            value={clientAddress}
+            onChange={(e) => onChange(e)}
             required
-          >
-            {({
-              getInputProps,
-              suggestions,
-              getSuggestionItemProps,
-              loading,
-            }) => (
-              <div>
-                <input {...getInputProps({ placeholder: "Client Address" })} />
-
-                <div>
-                  {loading ? <div>...loading</div> : null}
-
-                  {suggestions.map((suggestion) => {
-                    const style = {
-                      backgroundColor: suggestion.active ? "#41b6e6" : "#fff",
-                    };
-
-                    return (
-                      <div {...getSuggestionItemProps(suggestion, { style })}>
-                        {suggestion.description}
-                      </div>
-                    );
-                  })}
-                </div>
-              </div>
-            )}
-          </PlacesAutocomplete>
+          />
         </div>
         <div className="form-group">
           <input
