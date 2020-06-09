@@ -1,20 +1,21 @@
-import React, {Fragment, useEffect } from 'react';
-import { connect } from 'react-redux';
-import PropTypes from 'prop-types';
-import DashboardActions from './DashboardActions';
-import { getCurrentProfile } from '../../actions/profile';
-import Spinner from '../layout/Spinner';
+import React, { Fragment, useEffect } from "react";
+import { connect } from "react-redux";
+import PropTypes from "prop-types";
+import DashboardActions from "./DashboardActions";
+import AdminDashboardActions from "./AdminDashboardActions";
+import { getCurrentProfile } from "../../actions/profile";
+import Spinner from "../layout/Spinner";
 
 const Dashboard = ({
   getCurrentProfile,
   auth: { user, loading },
-  profile: { profile }
+  profile: { profile },
 }) => {
-	useEffect(() => {
+  useEffect(() => {
     getCurrentProfile();
   }, [getCurrentProfile]);
 
-	return loading || user === null ? (
+  return loading || user === null ? (
     <Spinner />
   ) : (
     <Fragment>
@@ -22,25 +23,26 @@ const Dashboard = ({
       <p className="lead">
         <i className="fas fa-user" /> Welcome {user && user.name}
       </p>
-        <Fragment>
+      <Fragment>
+        {user.role === "admin" ? (
+          <AdminDashboardActions />
+        ) : (
           <DashboardActions />
-        </Fragment>
+        )}
       </Fragment>
+    </Fragment>
   );
 };
 
 Dashboard.propTypes = {
-	getCurrentProfile: PropTypes.func.isRequired,
-	auth: PropTypes.object.isRequired,
-	profile: PropTypes.object.isRequired
-
+  getCurrentProfile: PropTypes.func.isRequired,
+  auth: PropTypes.object.isRequired,
+  profile: PropTypes.object.isRequired,
 };
 
 const mapStateToProps = (state) => ({
-	auth: state.auth,
-	profile: state.profile
+  auth: state.auth,
+  profile: state.profile,
 });
 
-export default connect(
-	mapStateToProps, { getCurrentProfile }
-	)(Dashboard);
+export default connect(mapStateToProps, { getCurrentProfile })(Dashboard);
