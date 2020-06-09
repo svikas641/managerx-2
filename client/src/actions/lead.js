@@ -1,14 +1,7 @@
 import axios from "axios";
 import { setAlert } from "./alert";
 
-import {
-  GET_LEADS,
-  LEAD_ERROR,
-  ADD_LEAD,
-  GET_LEAD,
-  ADD_VISIT,
-  REMOVE_VISIT,
-} from "./types";
+import { GET_LEADS, LEAD_ERROR, ADD_LEAD, GET_LEAD, ADD_VISIT } from "./types";
 
 // Get Leads
 export const getLeads = () => async (dispatch) => {
@@ -107,24 +100,6 @@ export const addVisit = (leadId, formData) => async (dispatch) => {
     });
 
     dispatch(setAlert("Feedback Added", "success"));
-  } catch (err) {
-    dispatch({
-      type: LEAD_ERROR,
-      payload: { msg: err.response.statusText, status: err.response.status },
-    });
-  }
-};
-
-// remove feedback
-export const deleteVisit = (leadId, visitId) => async (dispatch) => {
-  try {
-    const res = await axios.delete(`api/lead/feedback/${leadId}/${visitId}`);
-    dispatch({
-      type: REMOVE_VISIT,
-      payload: visitId,
-    });
-
-    dispatch(setAlert("Feedback Removed", "success"));
   } catch (err) {
     dispatch({
       type: LEAD_ERROR,
