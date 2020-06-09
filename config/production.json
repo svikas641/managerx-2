@@ -1,6 +1,6 @@
 {
-	"mongoURI": "mongodb+srv://svikas641:VIKas7529@cluster0-f8fip.mongodb.net/test?retryWrites=true&w=majority",
-	"jwtSecret": "mysecrettoken",
-	"sgApiKey": "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",
-	"distanceMapKey": "AIzaSyA9a8cTlidWa0hVUraNYNFiICSq7JllY3k"
+	"mongoURI": "",
+	"jwtSecret": "",
+	"sgApiKey": "",
+	"distanceMapKey": ""
 }
