@@ -4,17 +4,17 @@ import {
   ADD_LEAD,
   GET_LEAD,
   ADD_VISIT,
-  REMOVE_VISIT
-} from '../actions/types';
+  REMOVE_VISIT,
+} from "../actions/types";
 
 const initialState = {
   leads: [],
   lead: null,
   loading: true,
-  error: {}
+  error: {},
 };
 
-export default function(state = initialState, action) {
+export default function (state = initialState, action) {
   const { type, payload } = action;
 
   switch (type) {
@@ -22,44 +22,42 @@ export default function(state = initialState, action) {
       return {
         ...state,
         leads: payload,
-        loading: false
+        loading: false,
       };
     case GET_LEAD:
       return {
         ...state,
         lead: payload,
-        loading: false
+        loading: false,
       };
     case ADD_LEAD:
       return {
         ...state,
         leads: [payload, ...state.leads],
-        loading: false
+        loading: false,
       };
     case LEAD_ERROR:
       return {
         ...state,
         error: payload,
-        loading: false
+        loading: false,
       };
     case ADD_VISIT:
       return {
         ...state,
         lead: { ...state.lead, visits: payload },
-        loading: false
+        loading: false,
       };
     case REMOVE_VISIT:
       return {
         ...state,
         lead: {
           ...state.lead,
-          visits: state.lead.visits.filter(
-            visit => visit._id !== payload
-          )
+          visits: state.lead.visits.filter((visit) => visit._id !== payload),
         },
-        loading: false
+        loading: false,
       };
     default:
       return state;
-}
+  }
 }
