@@ -7,6 +7,8 @@ import Login from "../auth/Login";
 import Alert from "../layout/Alert";
 import Leads from "../leads/Leads";
 import Lead from "../lead/Lead";
+import AssignDuty from "../assignDuty/AssignDuty";
+import ClientForm from "../clients/ClientForm";
 import Dashboard from "../dashboard/Dashboard";
 import PrivateRoute from "../routing/PrivateRoute";
 
@@ -22,6 +24,8 @@ const Routes = () => {
         <PrivateRoute exact path="/leads-log" component={Leads} />
         <PrivateRoute exact path="/leads-log/:id" component={Lead} />
         <PrivateRoute exact path="/checkin-feedback" component={CheckIn} />
+        <PrivateRoute exact path="/addClients" component={ClientForm} />
+        <PrivateRoute exact path="/assignDuties" component={AssignDuty} />
       </Switch>
     </section>
   );
