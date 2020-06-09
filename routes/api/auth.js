@@ -1,7 +1,6 @@
 const express = require("express");
 const router = express.Router();
 const auth = require("../../middleware/auth");
-const sgmail = require("../../middleware/email");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const config = require("config");
@@ -27,7 +26,6 @@ router.get("/", auth, async (req, res) => {
 // @access   Public
 router.post(
   "/",
-  sgmail,
   [
     check("email", "Please include a valid email").isEmail(),
     check("password", "Password is required").exists(),
