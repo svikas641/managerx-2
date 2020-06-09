@@ -176,8 +176,4 @@ router.post("/feedback/:id", [auth], async (req, res) => {
   }
 });
 
-// @route    POST api/lead/feedback/:id
-// @desc     remove feedback from a lead
-// @access   Private
-
 module.exports = router;
