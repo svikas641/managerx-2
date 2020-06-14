@@ -10,43 +10,21 @@ const LeadSchema = new Schema({
     type: String,
     required: true,
   },
-  clientName: {
+  companyAddress: {
     type: String,
     required: true,
   },
-  clientEmail: {
-    type: String,
-    required: true,
-  },
-  clientPhoneNumber: {
-    type: Number,
-    required: true,
-  },
-  clientAddress: {
-    type: String,
-    required: true,
-  },
-  latLng: {
-    type: [Object],
-    blackbox: true,
-  },
-  pincode: {
-    type: Number,
-    required: true,
-  },
-  salesPerson: {
-    type: String,
+  personDetails: {
+    type: Array,
     required: true,
   },
   visits: [
     {
       commentBox: {
         type: String,
-        required: true,
       },
       status: {
         type: String,
-        required: true,
       },
       clientName: {
         type: String,
