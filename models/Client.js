@@ -6,16 +6,20 @@ const ClientSchema = new Schema({
     type: Schema.Types.ObjectId,
     ref: "user",
   },
-  companyName: {
+  clientName: {
     type: String,
     required: true,
   },
-  companyAddress: {
+  clientAddress: {
     type: String,
     required: true,
   },
   personDetails: [
     {
+      id: {
+        type: Number,
+        required: true,
+      },
       name: {
         type: String,
         required: true,
