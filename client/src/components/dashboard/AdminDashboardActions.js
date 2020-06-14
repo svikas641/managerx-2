@@ -8,10 +8,10 @@ const AdminDashboardActions = () => {
         <i className="fas fa-laptop text-primary" /> Assign Duties
       </Link>
       <Link to="/addClients" className="btn btn-light">
-        <i className="fas fa-laptop text-primary" /> Add Clients
+        <i className="fas fa-user-plus text-primary" /> Add Clients
       </Link>
       <Link to="/addProspects" className="btn btn-light">
-        <i className="fas fa-laptop text-primary" /> Add Prospects
+        <i className="fas fa-user-plus text-primary" /> Add Prospects
       </Link>
     </div>
   );
