@@ -1,10 +1,8 @@
 const express = require("express");
 const router = express.Router();
 const auth = require("../../middleware/auth");
-const app = express();
 const AssignedDuty = require("../../models/AssignedDuties");
 const User = require("../../models/User");
-const axios = require("axios");
 
 // @route   POST api/duties/
 // @desc    assign new duty
@@ -32,23 +30,12 @@ router.post("/assignDuty", auth, async (req, res) => {
 
 // get All duties by logged in user
 
-router.get("/", auth, async (req, res) => {
+router.get("/", async (req, res) => {
   try {
     const duties = await AssignedDuty.find({ salesPerson: req.user.id }).sort({
       date: -1,
     });
     res.json(duties);
-  } catch (e) {
-    console.error(e.message);
-    res.status(500).send("Server Error");
-  }
-});
-
-// populate Lead Test
-router.get("/populateLead", auth, async (req, res) => {
-  try {
-    const users = await axios.get("http://localhost:5000/api/duties");
-    res.json(users);
   } catch (e) {
     console.error(e.message);
     res.status(500).send("Server Error");
