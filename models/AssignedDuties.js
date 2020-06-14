@@ -7,13 +7,13 @@ const AssignedDutiesSchema = new Schema({
     ref: "user",
   },
   client: {
-    type: String,
+    type: Array,
   },
   salesPerson: {
     type: String,
   },
   prospect: {
-    type: String,
+    type: Array,
   },
   date: {
     type: Date,
