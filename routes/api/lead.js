@@ -1,5 +1,6 @@
 const express = require("express");
 const router = express.Router();
+const Mongoose = require("mongoose");
 const fs = require("fs");
 const auth = require("../../middleware/auth");
 const sendEmail = require("../../middleware/email");
@@ -7,31 +8,49 @@ const { check, validationResult } = require("express-validator");
 const app = express();
 const Lead = require("../../models/Lead");
 const User = require("../../models/User");
+const Client = require("../../models/Client");
+const AssignedDuty = require("../../models/AssignedDuties");
 
 // TODO: VALIDATION
 
-// @route   POST api/lead/
+// @route   GET api/lead/
 // @desc    add a new lead
 // @access  Private
 
-router.post("/", auth, async (req, res) => {
+// create lead from assigned duty
+router.get("/populateData", auth, async (req, res) => {
+  const clients = [];
+
   try {
+    const duties = await AssignedDuty.find({ salesPerson: req.user.id }).sort({
+      date: -1,
+    });
+
+    duties.forEach((element) => clients.push(element.client));
+
+    var obj_ids = clients.map((item) => {
+      return Mongoose.Types.ObjectId(item);
+    });
+
+    const clientDetail = await Client.find({ _id: { $in: obj_ids } });
+    const { companyName, companyAddress, personDetails } = clientDetail[0];
+    console.log(clientDetail);
     const user = await User.findById(req.user.id).select("-password");
 
     const newLead = new Lead({
       user: req.user.id,
-      companyName: req.body.companyName,
-      clientName: req.body.clientName,
-      clientEmail: req.body.clientEmail,
-      clientPhoneNumber: req.body.clientPhoneNumber,
-      clientAddress: req.body.clientAddress,
-      pincode: req.body.pincode,
-      latLng: req.body.latLng,
-      salesPerson: user.name,
+      companyName,
+      companyAddress,
+      personDetails,
     });
 
     const lead = await newLead.save();
 
+    // Delete duty from assigned duty
+    const deleteDuty = await AssignedDuty.deleteOne(
+      { salesPerson: req.user.id },
+      (err = () => null)
+    );
     res.json(lead);
   } catch (e) {
     console.error(e.message);
