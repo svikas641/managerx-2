@@ -11,14 +11,14 @@ const User = require("../../models/User");
 // @desc    add a new client
 // @access  Private
 
-router.post("/", auth, checkRole, async (req, res) => {
+router.post("/addClient", auth, checkRole, async (req, res) => {
   try {
     const user = await User.findById(req.user.id).select("-password");
 
     const newClient = new Client({
       user: req.user.id,
-      companyName: req.body.companyName,
-      companyAddress: req.body.companyAddress,
+      clientName: req.body.clientName,
+      clientAddress: req.body.clientAddress,
       personDetails: req.body.personDetails,
       createdBy: user.name,
     });
@@ -56,8 +56,8 @@ router.post("/addProspect", auth, checkRole, async (req, res) => {
 
     const newProspect = new Prospect({
       user: req.user.id,
-      companyName: req.body.companyName,
-      companyAddress: req.body.companyAddress,
+      prospectName: req.body.prospectName,
+      prospectAddress: req.body.prospectAddress,
       personDetails: req.body.personDetails,
       createdBy: user.name,
     });
