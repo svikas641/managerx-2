@@ -3,6 +3,10 @@ import {
   CLIENTS_ERROR,
   GET_PROSPECTS,
   PROSPECTS_ERROR,
+  ADD_CLIENT,
+  ADD_CLIENT_ERROR,
+  ADD_PROSPECT,
+  ADD_PROSPECT_ERROR,
 } from "../actions/types";
 
 const initialState = {
@@ -30,6 +34,25 @@ export default function (state = initialState, action) {
       };
     case CLIENTS_ERROR:
     case PROSPECTS_ERROR:
+      return {
+        ...state,
+        error: payload,
+        loading: false,
+      };
+    case ADD_CLIENT:
+      return {
+        ...state,
+        clients: [payload, ...state.clients],
+        loading: false,
+      };
+    case ADD_PROSPECT:
+      return {
+        ...state,
+        prospects: [payload, ...state.prospects],
+        loading: false,
+      };
+    case ADD_PROSPECT_ERROR:
+    case ADD_CLIENT_ERROR:
       return {
         ...state,
         error: payload,
