@@ -31,3 +31,7 @@ export const GET_DUTY = "GET_DUTY";
 export const GET_DUTY_ERROR = "GET_DUTY_ERROR";
 export const GET_CLIENT_DATA = "GET_CLIENT_DATA";
 export const GET_CLIENT_DATA_ERROR = "GET_CLIENT_DATA_ERROR";
+export const ADD_CLIENT = "ADD_CLIENT";
+export const ADD_CLIENT_ERROR = "ADD_CLIENT_ERROR";
+export const ADD_PROSPECT = "ADD_PROSPECT";
+export const ADD_PROSPECT_ERROR = "ADD_PROSPECT_ERROR";
