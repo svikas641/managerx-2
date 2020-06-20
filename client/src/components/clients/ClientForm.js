@@ -13,14 +13,16 @@ const ClientForm = ({ createClient, history }) => {
         initialValues={{
           clientName: "",
           clientAddress: "",
+          type: "",
           personDetails: [
             { id: Math.random(), name: "", email: "", phoneNumber: "" },
           ],
         }}
-        onSubmit={(data, { setSubmitting }) => {
+        onSubmit={(data, { setSubmitting, resetForm }) => {
           setSubmitting(true);
           createClient(data, history);
           console.log("submit: ", data);
+          resetForm({});
           setSubmitting(false);
         }}
       >
@@ -35,6 +37,13 @@ const ClientForm = ({ createClient, history }) => {
                 name="clientAddress"
                 placeholder="Client Address"
               />
+            </div>
+            <div className="form-group">
+              <Field as="select" name="type">
+                <option value="0">Select Client Type</option>
+                <option value="client">Client</option>
+                <option value="prospect">Prospect</option>
+              </Field>
             </div>
             <FieldArray name="personDetails">
               {(arrayHelpers) => (
