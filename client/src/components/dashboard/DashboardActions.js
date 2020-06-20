@@ -7,9 +7,9 @@ const DashboardActions = () => {
       <Link to="/checkin-feedback" className="btn btn-light">
         <i className="fas fa-laptop text-primary" /> Check-in & Feedback
       </Link>
-      <Link to="/create-lead" className="btn btn-light">
+      {/* <Link to="/create-lead" className="btn btn-light">
         <i className="fas fa-plus-circle text-primary" /> Add New Lead
-      </Link>
+      </Link> */}
       <Link to="/leads-log" className="btn btn-light">
         <i className="fas fa-database text-primary" /> Leads Log
       </Link>
