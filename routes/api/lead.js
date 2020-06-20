@@ -1,11 +1,9 @@
 const express = require("express");
 const router = express.Router();
-const Mongoose = require("mongoose");
 const fs = require("fs");
 const auth = require("../../middleware/auth");
 const sendEmail = require("../../middleware/email");
 const { check, validationResult } = require("express-validator");
-const app = express();
 const Lead = require("../../models/Lead");
 const User = require("../../models/User");
 const Client = require("../../models/Client");
@@ -13,45 +11,34 @@ const AssignedDuty = require("../../models/AssignedDuties");
 
 // TODO: VALIDATION
 
-// @route   GET api/lead/
-// @desc    add a new lead
+// @route   GET api/lead/me
+// @desc    get all leads by a user
 // @access  Private
 
-// create lead from assigned duty
-router.get("/populateData", auth, async (req, res) => {
-  const clients = [];
-
+router.get("/", auth, async (req, res) => {
   try {
-    const duties = await AssignedDuty.find({ salesPerson: req.user.id }).sort({
+    const duties = await AssignedDuty.find({ salesPerson: req.user.id });
+
+    const clients = [];
+    duties.forEach((element) => clients.push(element.duty));
+
+    const docs = await Client.find({
+      _id: { $in: clients },
+    });
+
+    const newArr = docs.map((obj) => ({
+      ...obj._doc,
+      salesPerson: req.user.id,
+    }));
+
+    await Lead.insertMany(newArr);
+
+    await AssignedDuty.deleteMany({ salesPerson: req.user.id });
+
+    const leads = await Lead.find({ salesPerson: req.user.id }).sort({
       date: -1,
     });
-
-    duties.forEach((element) => clients.push(element.client));
-
-    var obj_ids = clients.map((item) => {
-      return Mongoose.Types.ObjectId(item);
-    });
-
-    const clientDetail = await Client.find({ _id: { $in: obj_ids } });
-    const { companyName, companyAddress, personDetails } = clientDetail[0];
-    console.log(clientDetail);
-    const user = await User.findById(req.user.id).select("-password");
-
-    const newLead = new Lead({
-      user: req.user.id,
-      companyName,
-      companyAddress,
-      personDetails,
-    });
-
-    const lead = await newLead.save();
-
-    // Delete duty from assigned duty
-    const deleteDuty = await AssignedDuty.deleteOne(
-      { salesPerson: req.user.id },
-      (err = () => null)
-    );
-    res.json(lead);
+    res.json(leads);
   } catch (e) {
     console.error(e.message);
     res.status(500).send("Server Error");
@@ -65,26 +52,11 @@ router.get("/populateData", auth, async (req, res) => {
 router.get("/pending", auth, async (req, res) => {
   try {
     const leads = await Lead.find({
-      user: req.user.id,
-      $and: [
-        { finalStatus: { $ne: "Lead closed" } },
-        { finalStatus: { $ne: "Done" } },
-      ],
+      salesPerson: req.user.id,
+      $and: [{ finalStatus: "pending" }],
+    }).sort({
+      date: -1,
     });
-    res.json(leads);
-  } catch (e) {
-    console.error(e.message);
-    res.status(500).send("Server Error");
-  }
-});
-
-// @route   GET api/lead/me
-// @desc    get all leads by a user
-// @access  Private
-
-router.get("/", auth, async (req, res) => {
-  try {
-    const leads = await Lead.find({ user: req.user.id }).sort({ date: -1 });
     res.json(leads);
   } catch (e) {
     console.error(e.message);
@@ -123,9 +95,7 @@ router.post("/feedback/:id", [auth], async (req, res) => {
     const newVisit = {
       commentBox: req.body.commentBox,
       status: req.body.status,
-      clientName: req.body.clientName,
-      clientEmail: req.body.clientEmail,
-      clientPhoneNumber: req.body.clientPhoneNumber,
+      email: req.body.email,
     };
 
     //Send Email Functionality
@@ -145,7 +115,7 @@ router.post("/feedback/:id", [auth], async (req, res) => {
         res.json(lead.visits);
         console.log("Met");
         break;
-      case "Not met":
+      case "Not_met":
         var htmlTemplate = fs
           .readFileSync("./routes/api/email_templates/not_met.html")
           .toString();
@@ -155,8 +125,8 @@ router.post("/feedback/:id", [auth], async (req, res) => {
         res.json(lead.visits);
         console.log("Not met");
         break;
-      case "Close Lead":
-        var closeLead = await Lead.findOneAndUpdate(
+      case "Close_Lead":
+        await Lead.findOneAndUpdate(
           {
             $and: [
               { _id: req.params.id },
@@ -170,7 +140,7 @@ router.post("/feedback/:id", [auth], async (req, res) => {
         console.log("Lead Closed");
         break;
       case "Done":
-        var leadDone = await Lead.findOneAndUpdate(
+        await Lead.findOneAndUpdate(
           { $and: [{ _id: req.params.id }, { finalStatus: { $ne: "Done" } }] },
           { $set: { finalStatus: "Done" } },
           { returnNewDocument: true }
@@ -182,13 +152,12 @@ router.post("/feedback/:id", [auth], async (req, res) => {
         console.log("None Selected");
     }
 
-    const toEmail = req.body.clientEmail;
-    const toName = req.body.clientName;
+    const toEmail = req.body.email;
     const fromEmail = user.email;
     const fromName = user.name;
     const contentValue = htmlTemplate;
 
-    sendEmail(toEmail, toName, subject, fromEmail, fromName, contentValue);
+    sendEmail(toEmail, subject, fromEmail, fromName, contentValue);
   } catch (err) {
     console.error(err.message);
     res.status(500).send("Server Error");
