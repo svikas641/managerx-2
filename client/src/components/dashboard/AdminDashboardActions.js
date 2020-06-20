@@ -10,9 +10,6 @@ const AdminDashboardActions = () => {
       <Link to="/addClients" className="btn btn-light">
         <i className="fas fa-user-plus text-primary" /> Add Clients
       </Link>
-      <Link to="/addProspects" className="btn btn-light">
-        <i className="fas fa-user-plus text-primary" /> Add Prospects
-      </Link>
     </div>
   );
 };
