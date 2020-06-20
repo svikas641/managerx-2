@@ -1,14 +1,7 @@
 const axios = require("axios");
 const config = require("config");
 
-function sendEmail(
-  toEmail,
-  toName,
-  subject,
-  fromEmail,
-  fromName,
-  contentValue
-) {
+function sendEmail(toEmail, subject, fromEmail, fromName, contentValue) {
   try {
     axios({
       method: "post",
@@ -22,7 +15,6 @@ function sendEmail(
             to: [
               {
                 email: toEmail,
-                name: toName,
               },
             ],
             subject: subject,
