@@ -1,8 +1,11 @@
 const express = require("express");
 const router = express.Router();
+const Mongoose = require("mongoose");
 const auth = require("../../middleware/auth");
 const AssignedDuty = require("../../models/AssignedDuties");
 const User = require("../../models/User");
+const Client = require("../../models/Client");
+const Lead = require("../../models/Lead");
 
 // @route   POST api/duties/
 // @desc    assign new duty
@@ -10,18 +13,32 @@ const User = require("../../models/User");
 
 router.post("/assignDuty", auth, async (req, res) => {
   try {
-    const user = await User.findById(req.user.id).select("-password");
+    dutyArray = req.body.duty;
 
-    const newDuty = new AssignedDuty({
-      user: req.user.id,
-      client: req.body.client,
-      prospect: req.body.prospect,
-      salesPerson: req.body.salesPerson,
+    const resp = dutyArray.flatMap((arr) => arr).map(({ value }) => value);
+
+    const docs = await Lead.find({
+      _id: { $in: resp },
+    });
+    const msg = [];
+
+    resp.forEach(async (id) => {
+      const doc = docs.find((d) => d._id == id);
+
+      if (doc) {
+        msg.push(`Lead already exist for - ${doc.clientName}`);
+      } else {
+        msg.push(`Lead Successfully Added`);
+        const newDuty = new AssignedDuty({
+          duty: id,
+          salesPerson: req.body.salesPerson,
+        });
+
+        await newDuty.save();
+      }
     });
 
-    const duty = await newDuty.save();
-
-    res.json(duty);
+    res.json(msg);
   } catch (e) {
     console.error(e.message);
     res.status(500).send("Server Error");
