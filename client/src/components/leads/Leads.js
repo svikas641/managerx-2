@@ -3,19 +3,13 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import { getLeads } from "../../actions/lead";
-import { populateLeadData } from "../../actions/duty";
 import Spinner from "../layout/Spinner";
 import LeadItem from "./LeadItem";
 
-const Leads = ({
-  getLeads,
-  populateLeadData,
-  lead: { leads, lead, loading },
-}) => {
+const Leads = ({ getLeads, lead: { leads, lead, loading } }) => {
   useEffect(() => {
     getLeads();
-    populateLeadData();
-  }, [getLeads, populateLeadData]);
+  }, [getLeads]);
 
   return loading || leads === [] ? (
     <Spinner />
@@ -36,7 +30,6 @@ const Leads = ({
 
 Leads.propTypes = {
   getLeads: PropTypes.func.isRequired,
-  populateLeadData: PropTypes.func.isRequired,
   lead: PropTypes.object.isRequired,
 };
 
@@ -44,4 +37,4 @@ const mapStateToProps = (state) => ({
   lead: state.lead,
 });
 
-export default connect(mapStateToProps, { getLeads, populateLeadData })(Leads);
+export default connect(mapStateToProps, { getLeads })(Leads);
