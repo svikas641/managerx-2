@@ -23,6 +23,9 @@ const Lead = ({ getLead, lead: { lead, loading }, match }) => {
       <Link to="/checkin-feedback" className="btn btn-dark my-1">
         Pending Leads
       </Link>
+      <Link to="/dashboard" className="btn btn-dark my-1">
+        Back To Dashboard
+      </Link>
       <LeadItem lead={lead} fullContent={true} />
       <VisitForm leadId={lead._id} />
       <div className="comments">
