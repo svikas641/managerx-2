@@ -30,6 +30,7 @@ const CheckIn = ({ getPendingLeads, lead: { leads, loading } }) => {
 
 CheckIn.propTypes = {
   lead: PropTypes.object.isRequired,
+  getPendingLeads: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
