@@ -2,32 +2,34 @@ import React, { useState, Fragment } from "react";
 import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
-import { assignClient } from "../../actions/duty";
+import { assignDuty } from "../../actions/duty";
 import Select from "react-select";
 import makeAnimated from "react-select/animated";
 const animatedComponents = makeAnimated();
 
-const ClientDuty = ({ clients, users, assignClient, history }) => {
+const ClientDuty = ({ clients, users, assignDuty, history }) => {
   const initialState = {
     salesPerson: "",
   };
-  const [client, setClient] = useState([]);
+  const [duty, setDuty] = useState([]);
 
   const [formData, setFormData] = useState(initialState);
 
   const { salesPerson } = formData;
 
   const onChange = (e) =>
-    setFormData({ ...formData, [e.target.name]: e.target.value, client });
+    setFormData({ ...formData, [e.target.name]: e.target.value, duty });
 
   const onSubmit = (e) => {
     e.preventDefault();
     console.log(formData);
-    assignClient(formData, history);
+    assignDuty(formData, history);
     setFormData(initialState);
   };
 
-  const options = clients.map((element) => ({
+  const filtered = clients.filter((element) => element.type === "client");
+
+  const options = filtered.map((element) => ({
     label: element.clientName,
     value: element._id,
   }));
@@ -40,9 +42,9 @@ const ClientDuty = ({ clients, users, assignClient, history }) => {
         </div>
         <form className="form my-1" onSubmit={onSubmit}>
           <Select
-            name="client"
+            name="duty"
             className="form-group"
-            onChange={setClient}
+            onChange={setDuty}
             isMulti
             options={options}
             placeholder="Select Client"
@@ -72,7 +74,7 @@ const ClientDuty = ({ clients, users, assignClient, history }) => {
 };
 
 ClientDuty.propTypes = {
-  assignClient: PropTypes.func.isRequired,
+  assignDuty: PropTypes.func.isRequired,
 };
 
-export default connect(null, { assignClient })(ClientDuty);
+export default connect(null, { assignDuty })(ClientDuty);
