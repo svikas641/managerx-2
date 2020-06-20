@@ -2,33 +2,35 @@ import React, { useState, Fragment } from "react";
 import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
-import { assignProspect } from "../../actions/duty";
+import { assignDuty } from "../../actions/duty";
 import Select from "react-select";
 import makeAnimated from "react-select/animated";
 const animatedComponents = makeAnimated();
 
-const ProspectDuty = ({ prospects, users, assignProspect, history }) => {
+const ProspectDuty = ({ clients, users, assignDuty, history }) => {
   const initialState = {
     salesPerson: "",
   };
 
-  const [prospect, setProspect] = useState([]);
+  const [duty, setDuty] = useState([]);
 
   const [formData, setFormData] = useState(initialState);
 
   const { salesPerson } = formData;
 
-  const options = prospects.map((element) => ({
-    label: element.prospectName,
+  const filtered = clients.filter((element) => element.type === "prospect");
+
+  const options = filtered.map((element) => ({
+    label: element.clientName,
     value: element._id,
   }));
 
   const onChange = (e) =>
-    setFormData({ ...formData, [e.target.name]: e.target.value, prospect });
+    setFormData({ ...formData, [e.target.name]: e.target.value, duty });
 
   const onSubmit = (e) => {
     e.preventDefault();
-    assignProspect(formData, history);
+    assignDuty(formData, history);
     console.log(formData);
     setFormData(initialState);
   };
@@ -41,9 +43,9 @@ const ProspectDuty = ({ prospects, users, assignProspect, history }) => {
         </div>
         <form className="form my-1" onSubmit={onSubmit}>
           <Select
-            name="prospect"
+            name="duty"
             className="form-group"
-            onChange={setProspect}
+            onChange={setDuty}
             isMulti
             options={options}
             placeholder="Select Prospect"
@@ -57,7 +59,7 @@ const ProspectDuty = ({ prospects, users, assignProspect, history }) => {
           >
             <option value="0">* Select Sales Person</option>
             {users.map((user) => (
-              <option key={user._id} value={user.name}>
+              <option key={user._id} value={user._id}>
                 {user.name}
               </option>
             ))}
@@ -73,7 +75,7 @@ const ProspectDuty = ({ prospects, users, assignProspect, history }) => {
 };
 
 ProspectDuty.propTypes = {
-  assignProspect: PropTypes.func.isRequired,
+  assignDuty: PropTypes.func.isRequired,
 };
 
-export default connect(null, { assignProspect })(ProspectDuty);
+export default connect(null, { assignDuty })(ProspectDuty);
