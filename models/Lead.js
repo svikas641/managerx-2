@@ -2,21 +2,21 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
 const LeadSchema = new Schema({
-  user: {
+  clientId: {
     type: Schema.Types.ObjectId,
-    ref: "user",
+    ref: "client",
   },
-  companyName: {
+  clientName: {
     type: String,
-    required: true,
   },
-  companyAddress: {
+  clientAddress: {
     type: String,
-    required: true,
   },
   personDetails: {
     type: Array,
-    required: true,
+  },
+  type: {
+    type: String,
   },
   visits: [
     {
@@ -44,6 +44,10 @@ const LeadSchema = new Schema({
   finalStatus: {
     type: String,
     default: "pending",
+  },
+  salesPerson: {
+    type: Schema.Types.ObjectId,
+    ref: "user",
   },
   date: {
     type: Date,
