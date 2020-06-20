@@ -2,34 +2,28 @@ import React, { useState } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { addVisit } from "../../actions/lead";
+import Spinner from "../layout/Spinner";
 
 const initialState = {
   status: "",
-  clientName: "",
-  clientEmail: "",
-  clientPhoneNumber: "",
+  email: "",
   commentBox: "",
 };
 
-const VisitForm = ({ leadId, addVisit }) => {
+const VisitForm = ({ leadId, addVisit, lead: { lead, loading } }) => {
   const [formData, setFormData] = useState(initialState);
-  const {
-    status,
-    clientName,
-    clientEmail,
-    clientPhoneNumber,
-    commentBox,
-  } = formData;
+  const { status, email, commentBox } = formData;
 
   const onChange = (e) =>
     setFormData({ ...formData, [e.target.name]: e.target.value });
-
   const onSubmit = (e) => {
     e.preventDefault();
     addVisit(leadId, formData);
     setFormData(initialState);
   };
-  return (
+  return loading || lead === null ? (
+    <Spinner />
+  ) : (
     <div className="post-form">
       <div className="bg-primary p">
         <h3>Add a Visit</h3>
@@ -38,37 +32,24 @@ const VisitForm = ({ leadId, addVisit }) => {
         <select name="status" value={status} onChange={onChange}>
           <option value="0">* Select Lead Status</option>
           <option value="Met">Met</option>
-          <option value="Not met">Not met</option>
+          <option value="Not_met">Not met</option>
+          <option value="Close_Lead">Close Lead</option>
+          <option value="Done">Done</option>
         </select>
         <div className="form-group">
-          <input
-            type="text"
-            placeholder="Client Name"
-            name="clientName"
-            value={clientName}
+          <select
+            className="form-group"
+            name="email"
+            value={email}
             onChange={onChange}
-            required
-          />
-        </div>
-        <div className="form-group">
-          <input
-            type="email"
-            placeholder="Client Email"
-            name="clientEmail"
-            value={clientEmail}
-            onChange={onChange}
-            required
-          />
-        </div>
-        <div className="form-group">
-          <input
-            type="number"
-            placeholder="Client Phone Number"
-            name="clientPhoneNumber"
-            value={clientPhoneNumber}
-            onChange={onChange}
-            required
-          />
+          >
+            <option value="0">* Select Person</option>
+            {lead.personDetails.map((person) => (
+              <option key={person._id} value={person.email}>
+                {person.name}
+              </option>
+            ))}
+          </select>
         </div>
         <textarea
           name="commentBox"
@@ -84,8 +65,14 @@ const VisitForm = ({ leadId, addVisit }) => {
   );
 };
 
+const mapStateToProps = (state) => ({
+  auth: state.auth,
+  lead: state.lead,
+});
+
 VisitForm.propTypes = {
   addVisit: PropTypes.func.isRequired,
+  lead: PropTypes.object.isRequired,
 };
 
-export default connect(null, { addVisit })(VisitForm);
+export default connect(mapStateToProps, { addVisit })(VisitForm);
