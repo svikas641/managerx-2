@@ -19,6 +19,7 @@ router.post("/addClient", auth, checkRole, async (req, res) => {
       user: req.user.id,
       clientName: req.body.clientName,
       clientAddress: req.body.clientAddress,
+      type: req.body.type,
       personDetails: req.body.personDetails,
       createdBy: user.name,
     });
@@ -42,31 +43,6 @@ router.get("/", auth, checkRole, async (req, res) => {
     res.json(clients);
   } catch (err) {
     console.error(err.message);
-    res.status(500).send("Server Error");
-  }
-});
-
-// @route   POST api/client/
-// @desc    add a new prospect
-// @access  Private
-
-router.post("/addProspect", auth, checkRole, async (req, res) => {
-  try {
-    const user = await User.findById(req.user.id).select("-password");
-
-    const newProspect = new Prospect({
-      user: req.user.id,
-      prospectName: req.body.prospectName,
-      prospectAddress: req.body.prospectAddress,
-      personDetails: req.body.personDetails,
-      createdBy: user.name,
-    });
-
-    const prospect = await newProspect.save();
-
-    res.json(prospect);
-  } catch (e) {
-    console.error(e.message);
     res.status(500).send("Server Error");
   }
 });
