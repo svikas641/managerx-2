@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { addVisit } from "../../actions/lead";
 import Spinner from "../layout/Spinner";
+import ComponentWithGeolocation from "./ComponentWithGeolocation";
 
 const initialState = {
   status: "",
@@ -61,6 +62,7 @@ const VisitForm = ({ leadId, addVisit, lead: { lead, loading } }) => {
         />
         <input type="submit" className="btn btn-dark my-1" value="Submit" />
       </form>
+      <ComponentWithGeolocation />
     </div>
   );
 };
