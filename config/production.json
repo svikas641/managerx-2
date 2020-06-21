@@ -1,5 +1,5 @@
 {
 	"mongoURI": "mongodb+srv://svikas641:VIKas7529@cluster0-f8fip.mongodb.net/unitech?retryWrites=true&w=majority",
 	"jwtSecret": "mysecrettoken",
-	"sgApiKey": "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",
+	"sgApiKey": "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"
 }
