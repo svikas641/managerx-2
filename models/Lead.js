@@ -29,10 +29,10 @@ const LeadSchema = new Schema({
       clientName: {
         type: String,
       },
-      clientEmail: {
-        type: String,
+      lat: {
+        type: Number,
       },
-      clientPhoneNumber: {
+      lng: {
         type: Number,
       },
       date: {

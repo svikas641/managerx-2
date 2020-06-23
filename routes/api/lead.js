@@ -96,6 +96,8 @@ router.post("/feedback/:id", [auth], async (req, res) => {
       commentBox: req.body.commentBox,
       status: req.body.status,
       email: req.body.email,
+      lat: req.body.lat,
+      lng: req.body.lng,
     };
 
     //Send Email Functionality
