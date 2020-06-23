@@ -1,5 +1,5 @@
 import axios from "axios";
-import { setAlert } from "./alert";
+import { toast } from "react-toastify";
 
 import { ASSIGN_DUTY, ASSIGN_DUTY_ERROR, GET_LEADS, LEAD_ERROR } from "./types";
 
@@ -17,8 +17,9 @@ export const assignDuty = (formData, history) => async (dispatch) => {
       payload: res.data,
     });
 
-    dispatch(setAlert("Checking Duty Assignment", "checking"));
-    dispatch(setAlert(`${res.data}`, "success"));
+    toast.info("Checking Duty Assignment");
+    toast.success(`${res.data}`);
+
     history.push("/assignDuty");
   } catch (err) {
     dispatch({

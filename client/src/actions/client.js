@@ -8,7 +8,7 @@ import {
   ADD_CLIENT_ERROR,
 } from "./types";
 
-import { setAlert } from "./alert";
+import { toast } from "react-toastify";
 
 // Add new CLient
 export const createClient = (data, history) => async (dispatch) => {
@@ -25,7 +25,8 @@ export const createClient = (data, history) => async (dispatch) => {
       payload: res.data,
     });
 
-    dispatch(setAlert("Client Created", "success"));
+    toast.success("Client Created");
+
     history.push("/addClients");
   } catch (err) {
     dispatch({
@@ -55,27 +56,6 @@ export const getClients = () => async (dispatch) => {
   }
 };
 
-// // Get All Prospects
-// export const getProspects = () => async (dispatch) => {
-//   try {
-//     const res = await axios.get("/api/client/getProspect");
-
-//     dispatch({
-//       type: GET_PROSPECTS,
-//       payload: res.data,
-//     });
-//   } catch (err) {
-//     dispatch({
-//       type: PROSPECTS_ERROR,
-//       payload: {
-//         msg: err.response.statusText,
-//         status: err.response.status,
-//       },
-//     });
-//   }
-// };
-
-//
 export const createDuty = (formData, history) => async (dispatch) => {
   try {
     const config = {
@@ -90,7 +70,7 @@ export const createDuty = (formData, history) => async (dispatch) => {
       payload: res.data,
     });
 
-    dispatch(setAlert("Duty Assigned", "success"));
+    toast.success("Duty Assigned");
     history.push("/assignDuties");
   } catch (err) {
     dispatch({

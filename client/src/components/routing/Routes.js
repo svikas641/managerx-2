@@ -4,18 +4,19 @@ import CreateLead from "../lead-form/CreateLead";
 import CheckIn from "../checkin-feedback/CheckIn";
 import Register from "../auth/Register";
 import Login from "../auth/Login";
-import Alert from "../layout/Alert";
 import Leads from "../leads/Leads";
 import Lead from "../lead/Lead";
 import AssignDuty from "../assignDuty/AssignDuty";
 import ClientForm from "../clients/ClientForm";
+import Calender from "../reminder/Calender";
 import Dashboard from "../dashboard/Dashboard";
 import PrivateRoute from "../routing/PrivateRoute";
+import { ToastContainer } from "react-toastify";
 
 const Routes = () => {
   return (
     <section className="container">
-      <Alert />
+      <ToastContainer position="top-center" autoClose={5000} />
       <Switch>
         <Route exact path="/register" component={Register} />
         <Route exact path="/login" component={Login} />
@@ -26,6 +27,7 @@ const Routes = () => {
         <PrivateRoute exact path="/checkin-feedback" component={CheckIn} />
         <PrivateRoute exact path="/addClients" component={ClientForm} />
         <PrivateRoute exact path="/assignDuties" component={AssignDuty} />
+        <PrivateRoute exact path="/reminder" component={Calender} />
       </Switch>
     </section>
   );

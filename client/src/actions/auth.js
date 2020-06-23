@@ -1,5 +1,5 @@
 import axios from "axios";
-import { setAlert } from "./alert";
+import { toast } from "react-toastify";
 import {
   REGISTER_SUCCESS,
   REGISTER_FAIL,
@@ -58,7 +58,7 @@ export const register = ({ name, email, phoneNumber, password }) => async (
     const errors = err.response.data.errors;
 
     if (errors) {
-      errors.forEach((error) => dispatch(setAlert(error.msg, "danger")));
+      errors.forEach((error) => toast.error(error.msg));
     }
 
     dispatch({
@@ -90,7 +90,7 @@ export const login = (email, password) => async (dispatch) => {
     const errors = err.response.data.errors;
 
     if (errors) {
-      errors.forEach((error) => dispatch(setAlert(error.msg, "danger")));
+      errors.forEach((error) => toast.error(error.msg));
     }
 
     dispatch({

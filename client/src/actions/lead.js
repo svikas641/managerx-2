@@ -1,5 +1,5 @@
 import axios from "axios";
-import { setAlert } from "./alert";
+import { toast } from "react-toastify";
 
 import { GET_LEADS, LEAD_ERROR, ADD_LEAD, GET_LEAD, ADD_VISIT } from "./types";
 
@@ -52,7 +52,7 @@ export const createLead = (formData, history) => async (dispatch) => {
       payload: res.data,
     });
 
-    dispatch(setAlert("Lead Created", "success"));
+    toast.success("Lead Created");
     history.push("/create-lead");
   } catch (err) {
     dispatch({
@@ -80,7 +80,7 @@ export const getLead = (id) => async (dispatch) => {
 };
 
 // Add visit
-export const addVisit = (leadId, formData) => async (dispatch) => {
+export const addVisit = (leadId, newData) => async (dispatch) => {
   try {
     const config = {
       headers: {
@@ -90,7 +90,7 @@ export const addVisit = (leadId, formData) => async (dispatch) => {
 
     const res = await axios.post(
       `/api/lead/feedback/${leadId}`,
-      formData,
+      newData,
       config
     );
 
@@ -99,7 +99,7 @@ export const addVisit = (leadId, formData) => async (dispatch) => {
       payload: res.data,
     });
 
-    dispatch(setAlert("Feedback Added", "success"));
+    toast.success("Feedback Added");
   } catch (err) {
     dispatch({
       type: LEAD_ERROR,
