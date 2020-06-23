@@ -5,7 +5,7 @@ import Moment from "react-moment";
 
 const VisitItem = ({
   leadId,
-  visit: { _id, status, commentBox, name, email, phoneNumber, date },
+  visit: { status, commentBox, name, date },
   auth,
 }) => (
   <div>
@@ -15,8 +15,6 @@ const VisitItem = ({
           <li> Status : {status}</li>
           <li> Comment : {commentBox}</li>
           <li>Client Name : {name}</li>
-          <li>Client Email : {email}</li>
-          <li>Client Phone Number : {phoneNumber}</li>
           <li>
             Visited on <Moment format="DD/MM/YYYY">{date}</Moment>
           </li>
