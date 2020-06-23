@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { addVisit } from "../../actions/lead";
 import Spinner from "../layout/Spinner";
-import ComponentWithGeolocation from "./ComponentWithGeolocation";
+import useGeolocation from "react-hook-geolocation";
 
 const initialState = {
   status: "",
@@ -12,14 +12,22 @@ const initialState = {
 };
 
 const VisitForm = ({ leadId, addVisit, lead: { lead, loading } }) => {
+  const geolocation = useGeolocation();
+
   const [formData, setFormData] = useState(initialState);
   const { status, email, commentBox } = formData;
 
   const onChange = (e) =>
     setFormData({ ...formData, [e.target.name]: e.target.value });
+
   const onSubmit = (e) => {
+    const coords = {
+      lat: geolocation.latitude,
+      lng: geolocation.longitude,
+    };
+    const newData = { ...formData, ...coords };
     e.preventDefault();
-    addVisit(leadId, formData);
+    addVisit(leadId, newData);
     setFormData(initialState);
   };
   return loading || lead === null ? (
@@ -62,7 +70,6 @@ const VisitForm = ({ leadId, addVisit, lead: { lead, loading } }) => {
         />
         <input type="submit" className="btn btn-dark my-1" value="Submit" />
       </form>
-      <ComponentWithGeolocation />
     </div>
   );
 };
