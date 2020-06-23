@@ -10,6 +10,7 @@ import { loadUser } from "./actions/auth";
 import setAuthToken from "./utils/setAuthToken";
 
 import "./App.css";
+import "react-toastify/dist/ReactToastify.css";
 
 if (localStorage.token) {
   setAuthToken(localStorage.token);
