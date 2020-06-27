@@ -5,7 +5,6 @@
   --light-color: #f4f4f4;
   --danger-color: #dc3545;
   --success-color: #28a745;
-  --checking-color: #fce803;
 }
 
 * {
@@ -580,7 +579,7 @@ button {
     width: 100%;
     margin-bottom: 0.2rem;
   }
-
+  
   .post {
     grid-template-columns: 1fr;
   }
