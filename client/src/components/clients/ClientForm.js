@@ -21,7 +21,6 @@ const ClientForm = ({ createClient, history }) => {
         onSubmit={(data, { setSubmitting, resetForm }) => {
           setSubmitting(true);
           createClient(data, history);
-          console.log("submit: ", data);
           resetForm({});
           setSubmitting(false);
         }}
