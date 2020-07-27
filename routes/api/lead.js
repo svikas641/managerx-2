@@ -138,8 +138,9 @@ router.post("/feedback/:id", [auth], async (req, res) => {
           { $set: { finalStatus: "Lead closed" } },
           { returnNewDocument: true }
         );
-        res.json("Lead final status updated");
-        console.log("Lead Closed");
+        lead.visits.unshift(newVisit);
+        await lead.save();
+        res.json(lead.visits);
         break;
       case "Done":
         await Lead.findOneAndUpdate(
@@ -147,8 +148,9 @@ router.post("/feedback/:id", [auth], async (req, res) => {
           { $set: { finalStatus: "Done" } },
           { returnNewDocument: true }
         );
-        res.json("Lead final status updated");
-        console.log("Lead Done");
+        lead.visits.unshift(newVisit);
+        await lead.save();
+        res.json(lead.visits);
         break;
       default:
         console.log("None Selected");
