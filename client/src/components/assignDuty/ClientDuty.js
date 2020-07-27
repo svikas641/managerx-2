@@ -22,7 +22,6 @@ const ClientDuty = ({ clients, users, assignDuty, history }) => {
 
   const onSubmit = (e) => {
     e.preventDefault();
-    console.log(formData);
     assignDuty(formData, history);
     setFormData(initialState);
   };

@@ -31,7 +31,6 @@ const ProspectDuty = ({ clients, users, assignDuty, history }) => {
   const onSubmit = (e) => {
     e.preventDefault();
     assignDuty(formData, history);
-    console.log(formData);
     setFormData(initialState);
   };
 
