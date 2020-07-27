@@ -53,7 +53,10 @@ const Login = ({ login, isAuthenticated }) => {
         </div>
         <input type="submit" className="btn btn-primary" value="Login" />
       </form>
-      <small>Login Hint: Use demp@email.com and password - demo123 </small>
+      <small>
+        Login Hint: Use svikas641@gmail.com and password - 123456 For admin
+        login: admin@gmail.com and password - 123456{" "}
+      </small>
       <p className="my-1">
         Don't have an account? <Link to="/register">Sign Up</Link>
       </p>
